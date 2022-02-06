@@ -444,7 +444,7 @@ if len(sptfy_playlist_link) != 0:
         st.text(
             f"Public: {public}")
         st.text(
-            f"[Open on Spotify]({})".format(sptfy_playlist_link))
+            "[Open on Spotify]({})".format(sptfy_playlist_link))
 
     with row1_3:
         st.dataframe(playlist_df[["name", "artist", "album"]])
