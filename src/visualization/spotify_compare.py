@@ -412,6 +412,7 @@ with row2_1:
     sptfy_playlist_link = st.text_input("Spotify playlist link - Spotify playlist > Share > Copy link to playlist")
 
 # ROW 3 ------------------------------------------------------------------------
+st.write('#')
 
 if len(sptfy_playlist_link) != 0:
     playlist_id = get_playist_id_from_link(sptfy_playlist_link)
@@ -455,7 +456,7 @@ if len(sptfy_playlist_link) != 0:
     )
     with row9_1:
         st.header("Playlist Features vs. Global Top 50")
-        st.write("The dashed white line shows the average feature value for Spotify's Top 50 Global Playlist. "
+        st.write("The dashed black line shows the average feature value for Spotify's Top 50 Global Playlist. "
                  "The dashed green line shows the average feature value for {}. Definitions of features can be found "
                  "in the 'Additional Info' section at the bottom of the page".format(name))
 
