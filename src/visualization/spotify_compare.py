@@ -391,6 +391,11 @@ print(spotify.access_token)
 access_token = spotify.access_token
 st.write(print(spotify.access_token))
 
+sp = spotipy.Spotify(auth=spotify.access_token)
+playlist = sp.playlist(user_id, "37i9dQZF1EJACfRAJ1fsae")
+name = playlist["name"]
+st.write(name)
+
 # ROW 1 ------------------------------------------------------------------------
 
 row1_spacer1, row1_1, row1_spacer2, row1_2, row1_spacer3 = st.columns(
