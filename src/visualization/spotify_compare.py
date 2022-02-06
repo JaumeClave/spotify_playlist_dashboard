@@ -1,4 +1,5 @@
 import streamlit as st
+from spotipy_client import *
 import pandas as pd
 import numpy as np
 import spotipy
@@ -69,9 +70,9 @@ def pipeline_spotipy_authentication():
     Function pipelines the workflow needed to authenticate on Spotify
     :return:
     """
-    api_creds = make_api_cred_dataframe(FILE_PATH_API_CREDENTIAL) # Using Streamlit Secrets Management
-    user_id, client_id, client_secret = make_tokens_from_api_creds(api_creds)
-    # user_id, client_id, client_secret = st.secrets["user_id"], st.secrets["client_id"], st.secrets["client_secret"]
+    # api_creds = make_api_cred_dataframe(FILE_PATH_API_CREDENTIAL) # Using Streamlit Secrets Management
+    # user_id, client_id, client_secret = make_tokens_from_api_creds(api_creds)
+    user_id, client_id, client_secret = st.secrets["user_id"], st.secrets["client_id"], st.secrets["client_secret"]
     sp = get_token_authentication(user_id, client_id, client_secret, SPOTIPY_SCOPE)
     return sp, user_id
 
@@ -281,8 +282,8 @@ def plot_scatter(x_axis, y_axis, customdata_list, playlist_mean_line, mean_top50
                              hovertext=customdata_list, hoverlabel=dict(namelength=0), hovertemplate='%{hovertext}<br>Energy: %{y}<br>',
                              marker = dict(size = 8, color = y_axis, colorscale = 'algae', opacity=0.8)))
     fig.update_layout(width = 800, height = 400, margin = dict(l = 0, r = 00, b = 0, t = 0, pad = 2), template = "plotly_dark")
-    fig.add_hline(y=playlist_mean_line, line_dash="dash", line_color="green")
-    fig.add_hline(y=mean_top50_line, line_dash="dash", line_color="white")
+    fig.add_hline(y=playlist_mean_line, line_dash="dash", line_color="#1DB954")
+    fig.add_hline(y=mean_top50_line, line_dash="dash", line_color="#191414")
     fig.update_xaxes(showgrid=False, zeroline=False)
     fig.update_yaxes(showgrid=False, zeroline=False)
     st.plotly_chart(fig, use_container_width=True)
@@ -378,21 +379,14 @@ st.set_page_config(page_title='Spotify: Playlist Dashboard',
                    # page_icon='https://pbs.twimg.com/profile_images/' \
                    #           '1265092923588259841/LdwH0Ex1_400x400.jpg',
                    layout="wide")
+
 # Authenticate Spotify
-
-from spotipy_client import *
-
-client_id = 'f7eedef5bb4b4fe4ad5f7b276f8db10c'
-client_secret = '14505366a61b431994f7afe58ecdc550'
-user_id = "1113039340"
+client_id = st.secrets["client_id"]
+client_secret = st.secrets["client_secret"]
+user_id = st.secrets["user_id"]
 
 spotify = SpotifyAPI(client_id, client_secret)
 sp = spotipy.Spotify(auth=spotify.get_access_token())
-# playlist = sp.playlist(user_id, "37i9dQZF1EJACfRAJ1fsae")
-# name = playlist["name"]
-# st.write(name)
-
-# sp, user_id = pipeline_spotipy_authentication()
 
 # ROW 1 ------------------------------------------------------------------------
 
