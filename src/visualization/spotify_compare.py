@@ -505,7 +505,7 @@ if len(sptfy_playlist_link) != 0:
         st.header("Date Added")
         pipeline_date_added_calendar(playlist_df)
 
-# ROW 8 ------------------------------------------------------------------------
+# ROW 8 -------------------------------------------------------------------------
     st.write('')
     row8_spacer1, row8_1, row8_spacer2, = st.columns(
         (.1, 2, 0.000001)
