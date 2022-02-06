@@ -401,7 +401,7 @@ row2_spacer1, row2_1, row2_spacer2, row2_2, row2_spacer3 = st.columns(
 
 with row2_1:
     # Playlist link/id to name, image and description
-    sptfy_playlist_link = st.text_input("Spotify playlist link")
+    sptfy_playlist_link = st.text_input("Spotify playlist link - Spotify playlist > Share > Copy link to playlist")
 
 # ROW 3 ------------------------------------------------------------------------
 
