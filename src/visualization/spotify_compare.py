@@ -380,7 +380,7 @@ st.set_page_config(page_title='Spotify: Playlist Dashboard',
                    #           '1265092923588259841/LdwH0Ex1_400x400.jpg',
                    layout="wide")
 
-# Authenticate Spotify
+# Authenticate Spotify using custom library @ https://github.com/jjevans25/Spotipy-Chart/blob/master/spotipy_client/spotipy_client.py
 client_id = st.secrets["client_id"]
 client_secret = st.secrets["client_secret"]
 user_id = st.secrets["user_id"]
