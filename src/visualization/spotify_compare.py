@@ -60,7 +60,7 @@ def get_token_authentication(user_id, client_id, client_secret, scope):
     :return:
     """
     token = util.prompt_for_user_token(
-        user_id, scope, client_id = client_id, client_secret = client_secret, redirect_uri='http://127.0.0.1:9090')
+        user_id, scope, client_id = client_id, client_secret = client_secret, redirect_uri='http://localhost/')
     sp = spotipy.Spotify(auth = token)
     return sp
 
@@ -387,7 +387,7 @@ client_secret = '14505366a61b431994f7afe58ecdc550'
 
 sp = SpotifyAPI(client_id, client_secret)
 user_id = "1113039340"
-# sp, user_id = pipeline_spotipy_authentication()
+sp, user_id = pipeline_spotipy_authentication()
 
 # ROW 1 ------------------------------------------------------------------------
 
