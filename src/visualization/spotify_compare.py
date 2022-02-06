@@ -69,8 +69,9 @@ def pipeline_spotipy_authentication():
     Function pipelines the workflow needed to authenticate on Spotify
     :return:
     """
-    api_creds = make_api_cred_dataframe(FILE_PATH_API_CREDENTIAL)
-    user_id, client_id, client_secret = make_tokens_from_api_creds(api_creds)
+    # api_creds = make_api_cred_dataframe(FILE_PATH_API_CREDENTIAL) # Using Streamlit Secrets Management
+    # user_id, client_id, client_secret = make_tokens_from_api_creds(api_creds)
+    user_id, client_id, client_secret = st.secrets["user_id"], st.secrets["client_id"], st.secrets["client_secret"]
     sp = get_token_authentication(user_id, client_id, client_secret, SPOTIPY_SCOPE)
     return sp, user_id
 
