@@ -387,11 +387,11 @@ client_secret = '14505366a61b431994f7afe58ecdc550'
 user_id = "1113039340"
 
 spotify = SpotifyAPI(client_id, client_secret)
-print(spotify.access_token)
-access_token = spotify.access_token
-st.write(print(spotify.access_token))
+print(spotify.get_access_token())
+access_token = spotify.get_access_token()
+st.write(print(spotify.get_access_token()))
 
-sp = spotipy.Spotify(auth=spotify.access_token)
+sp = spotipy.Spotify(auth=spotify.get_access_token())
 playlist = sp.playlist(user_id, "37i9dQZF1EJACfRAJ1fsae")
 name = playlist["name"]
 st.write(name)
