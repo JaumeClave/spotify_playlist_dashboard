@@ -26,6 +26,7 @@ DAY_FREQUENCY = "D"
 START_OF_YEAR = "-1-1"
 END_OF_YEAR = "-12-31"
 COLORWAY_CALENDAR = 'PRGn'
+GLOBAL_TOP50_PLAYLIST_LINK = "https://open.spotify.com/playlist/37i9dQZEVXbMDoHDwVN2tF?si=e7a63efae3db4169"
 
 ################################################## FUNCTIONS ###########################################################
 
@@ -222,6 +223,33 @@ def pipeline_hour_min_length_of_playlist(tracks_with_features_df):
     return str_minutes, str_hours
 
 
+def make_global_top_50_mean_feature_value():
+    """
+    Function calls the Global Top 50 playlist and returns mean values of key features
+    :return:
+    """
+    playlist_df = get_playlist_df(GLOBAL_TOP50_PLAYLIST_LINK)
+    top_50_feature_df = make_playlist_track_with_featured_df(playlist_df)
+    t50_energy, t50_loudness, t50_tempo, t50_speechiness, t50_valence, t50_danceability = \
+        top_50_feature_df["energy"].mean(), top_50_feature_df["loudness"].mean(), top_50_feature_df["tempo"].mean(), \
+        top_50_feature_df["speechiness"].mean(), top_50_feature_df["valence"].mean(), \
+        top_50_feature_df["danceability"].mean()
+    return t50_energy, t50_loudness, t50_tempo, t50_speechiness, t50_valence, t50_danceability
+
+
+def make_playlist_feature_means(playlist_df):
+    """
+    Function returns the mean values for key playlist features (energy, loudness, etc...)
+    :param playlist_df:
+    :return:
+    """
+    playlist_energy, playlist_loudness, playlist_tempo, playlist_speechiness, playlist_valence, playlist_danceability = \
+        playlist_df["energy"].mean(), playlist_df["loudness"].mean(), playlist_df["tempo"].mean(), \
+        playlist_df["speechiness"].mean(), playlist_df["valence"].mean(), \
+        playlist_df["danceability"].mean()
+    return playlist_energy, playlist_loudness, playlist_tempo, playlist_speechiness, playlist_valence,\
+           playlist_danceability
+
 def get_xy_axis_and_data(tracks_with_features_df, yaxis, customdata, xaxis=None):
     """
 
@@ -239,7 +267,7 @@ def get_xy_axis_and_data(tracks_with_features_df, yaxis, customdata, xaxis=None)
     customdata_list = list(tracks_with_features_df[customdata])
     return x_axis, y_axis, customdata_list
 
-def plot_scatter(x_axis, y_axis, customdata_list):
+def plot_scatter(x_axis, y_axis, customdata_list, playlist_mean_line, mean_top50_line):
     """
 
     :param x_axis:
@@ -252,12 +280,14 @@ def plot_scatter(x_axis, y_axis, customdata_list):
                              hovertext=customdata_list, hoverlabel=dict(namelength=0), hovertemplate='%{hovertext}<br>Energy: %{y}<br>',
                              marker = dict(size = 8, color = y_axis, colorscale = 'algae', opacity=0.8)))
     fig.update_layout(width = 800, height = 400, margin = dict(l = 0, r = 00, b = 0, t = 0, pad = 2), template = "plotly_dark")
+    fig.add_hline(y=playlist_mean_line, line_dash="dash", line_color="green")
+    fig.add_hline(y=mean_top50_line, line_dash="dash", line_color="white")
     fig.update_xaxes(showgrid=False, zeroline=False)
     fig.update_yaxes(showgrid=False, zeroline=False)
     st.plotly_chart(fig, use_container_width=True)
     return None
 
-def pipeline_plot_feature(tracks_with_features_df, yaxis, customdata, xaxis=None):
+def pipeline_plot_feature(tracks_with_features_df, yaxis, customdata, playlist_mean_line, mean_top50_line, xaxis=None):
     """
 
     :param playlist_df:
@@ -267,7 +297,7 @@ def pipeline_plot_feature(tracks_with_features_df, yaxis, customdata, xaxis=None
     :return:
     """
     x_axis, y_axis, customdata_list = get_xy_axis_and_data(tracks_with_features_df, yaxis, customdata, xaxis)
-    plot_scatter(x_axis, y_axis, customdata_list)
+    plot_scatter(x_axis, y_axis, customdata_list, playlist_mean_line, mean_top50_line)
     return None
 
 def make_daily_add_series(playlist_df):
@@ -324,7 +354,7 @@ def make_artist_count_plot(artist_count):
         x=artist_count["name"],
         y=artist_count["artist"],
         orientation='h', marker_color="#1DB954"))
-    fig.update_layout(width=800, height=400, margin=dict(l=50, r=50, b=50, t=50, pad=4), template="plotly_dark")
+    fig.update_layout(width=800, height=600, margin=dict(l=50, r=50, b=50, t=50, pad=4), template="plotly_dark")
     fig.update_xaxes(showgrid=False, zeroline=False)
     fig.update_yaxes(showgrid=False, zeroline=False)
     st.plotly_chart(fig, use_container_width=True)
@@ -409,28 +439,36 @@ if len(sptfy_playlist_link) != 0:
     with row1_3:
         st.dataframe(playlist_df[["name", "artist", "album"]])
 
-
-    # else:
-    #     st.error(
-    #         "Oops! This player did not play during the selected time period. " \
-    #         "Change the filter and try again.")
-    #     st.stop()
-
 # ROW 4 ------------------------------------------------------------------------
-    st.write('')
+    row9_spacer1, row9_1, row9_spacer2, = st.columns(
+        (.1, 2, 0.000001)
+    )
+    with row9_1:
+        st.header("Playlist Features vs. Global Top 50")
+        st.write("The dashed white line shows the average feature value for Spotify's Top 50 Global Playlist. "
+                 "The dashed green line shows the average feature value for {}. Definitions of features can be found "
+                 "in the 'Additional Info' section at the bottom of the page".format(name))
+
+
+    playlist_energy, playlist_loudness, playlist_tempo, playlist_speechiness, playlist_valence, \
+    playlist_danceability = make_playlist_feature_means(tracks_with_features_df)
+    t50_energy, t50_loudness, t50_tempo, t50_speechiness, t50_valence, t50_danceability = \
+        make_global_top_50_mean_feature_value()
     row2_space1, row2_1, row2_space2, row2_2, row2_space3, row2_3, row2_space4 = st.columns(
         (.15, 1.5, .00000001, 1.5, .00000001, 1.5, 0.15))
     with row2_1:
         st.subheader('Energy')
-        pipeline_plot_feature(tracks_with_features_df, "energy", "name", xaxis=None)
+        pipeline_plot_feature(tracks_with_features_df, "energy", "name", playlist_energy, t50_energy, xaxis=None)
 
     with row2_2:
         st.subheader('Loudness')
-        pipeline_plot_feature(tracks_with_features_df, "loudness", "name", xaxis=None)
+        pipeline_plot_feature(tracks_with_features_df, "loudness", "name", playlist_loudness, t50_loudness, xaxis=None)
 
     with row2_3:
         st.subheader('Tempo')
-        pipeline_plot_feature(tracks_with_features_df, "tempo", "name", xaxis=None)
+        pipeline_plot_feature(tracks_with_features_df, "tempo", "name", playlist_tempo, t50_tempo, xaxis=None)
+
+
 
 # ROW 5 ------------------------------------------------------------------------
     st.write('')
@@ -438,15 +476,15 @@ if len(sptfy_playlist_link) != 0:
         (.15, 1.5, .00000001, 1.5, .00000001, 1.5, 0.15))
     with row2_1:
         st.subheader('Speechiness')
-        pipeline_plot_feature(tracks_with_features_df, "speechiness", "name", xaxis=None)
+        pipeline_plot_feature(tracks_with_features_df, "speechiness", "name", playlist_speechiness, t50_speechiness, xaxis=None)
 
     with row2_2:
         st.subheader('Valence')
-        pipeline_plot_feature(tracks_with_features_df, "valence", "name", xaxis=None)
+        pipeline_plot_feature(tracks_with_features_df, "valence", "name", playlist_valence, t50_valence, xaxis=None)
 
     with row2_3:
         st.subheader('Danceability')
-        pipeline_plot_feature(tracks_with_features_df, "danceability", "name", xaxis=None)
+        pipeline_plot_feature(tracks_with_features_df, "danceability", "name", playlist_danceability, t50_danceability, xaxis=None)
 
 # ROW 7 ------------------------------------------------------------------------
     st.write('')
@@ -459,10 +497,10 @@ if len(sptfy_playlist_link) != 0:
 
 # ROW 8 ------------------------------------------------------------------------
     st.write('')
-    row1_spacer1, row1_1, row1_spacer2, row1_2, row1_spacer3 = st.columns(
-        (.1, 2, 0.25, 1, .1)
+    row8_spacer1, row8_1, row8_spacer2, = st.columns(
+        (.1, 2, 0.000001)
     )
-    with row1_1:
+    with row8_1:
         st.header("Artist Count")
         pipeline_artist_count_plot(playlist_df)
 
@@ -517,3 +555,5 @@ if len(sptfy_playlist_link) != 0:
             
             ### Jaume Clave, 2021
             '''
+
+#%%
