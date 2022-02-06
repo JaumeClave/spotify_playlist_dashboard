@@ -399,7 +399,7 @@ row1_1.title('Spotify - Playlist Dashboard')
 with row1_2:
     st.write('#')
     row1_2.write(
-        'A Web App by [Jaume Clave](https://github.com/JaumeClave)')
+        'A Web App by [Jaume Clave](https://jaumeclave.github.io./)')
 
 # ROW 2 ------------------------------------------------------------------------
 
