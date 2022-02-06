@@ -387,7 +387,7 @@ client_secret = '14505366a61b431994f7afe58ecdc550'
 
 sp = SpotifyAPI(client_id, client_secret)
 user_id = "1113039340"
-sp, user_id = pipeline_spotipy_authentication()
+# sp, user_id = pipeline_spotipy_authentication()
 
 # ROW 1 ------------------------------------------------------------------------
 
