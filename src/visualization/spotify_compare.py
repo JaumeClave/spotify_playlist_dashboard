@@ -379,7 +379,6 @@ st.set_page_config(page_title='Spotify: Playlist Dashboard',
                    #           '1265092923588259841/LdwH0Ex1_400x400.jpg',
                    layout="wide")
 # Authenticate Spotify
-# sp, user_id = pipeline_spotipy_authentication()
 
 from spotipy_client import *
 
@@ -388,6 +387,7 @@ client_secret = '14505366a61b431994f7afe58ecdc550'
 
 sp = SpotifyAPI(client_id, client_secret)
 user_id = "1113039340"
+sp, user_id = pipeline_spotipy_authentication()
 
 # ROW 1 ------------------------------------------------------------------------
 
