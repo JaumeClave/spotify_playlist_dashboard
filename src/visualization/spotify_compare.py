@@ -60,7 +60,7 @@ def get_token_authentication(user_id, client_id, client_secret, scope):
     :return:
     """
     token = util.prompt_for_user_token(
-        user_id, scope, client_id = client_id, client_secret = client_secret, redirect_uri='https://share.streamlit.io/jaumeclave/spotify_playlist_dashboard/src/visualization/spotify_compare.py')
+        user_id, scope, client_id = client_id, client_secret = client_secret, redirect_uri='http://127.0.0.1:9090')
     sp = spotipy.Spotify(auth = token)
     return sp
 
