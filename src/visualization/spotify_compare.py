@@ -69,9 +69,9 @@ def pipeline_spotipy_authentication():
     Function pipelines the workflow needed to authenticate on Spotify
     :return:
     """
-    # api_creds = make_api_cred_dataframe(FILE_PATH_API_CREDENTIAL) # Using Streamlit Secrets Management
-    # user_id, client_id, client_secret = make_tokens_from_api_creds(api_creds)
-    user_id, client_id, client_secret = st.secrets["user_id"], st.secrets["client_id"], st.secrets["client_secret"]
+    api_creds = make_api_cred_dataframe(FILE_PATH_API_CREDENTIAL) # Using Streamlit Secrets Management
+    user_id, client_id, client_secret = make_tokens_from_api_creds(api_creds)
+    # user_id, client_id, client_secret = st.secrets["user_id"], st.secrets["client_id"], st.secrets["client_secret"]
     sp = get_token_authentication(user_id, client_id, client_secret, SPOTIPY_SCOPE)
     return sp, user_id
 
@@ -387,14 +387,12 @@ client_secret = '14505366a61b431994f7afe58ecdc550'
 user_id = "1113039340"
 
 spotify = SpotifyAPI(client_id, client_secret)
-print(spotify.get_access_token())
-access_token = spotify.get_access_token()
-st.write(print(spotify.get_access_token()))
-
 sp = spotipy.Spotify(auth=spotify.get_access_token())
-playlist = sp.playlist(user_id, "37i9dQZF1EJACfRAJ1fsae")
-name = playlist["name"]
-st.write(name)
+# playlist = sp.playlist(user_id, "37i9dQZF1EJACfRAJ1fsae")
+# name = playlist["name"]
+# st.write(name)
+
+# sp, user_id = pipeline_spotipy_authentication()
 
 # ROW 1 ------------------------------------------------------------------------
 
