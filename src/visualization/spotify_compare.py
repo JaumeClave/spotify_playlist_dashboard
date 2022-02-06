@@ -443,7 +443,7 @@ if len(sptfy_playlist_link) != 0:
             f"Collaborative: {collaborative}")
         st.text(
             f"Public: {public}")
-        st.text(
+        st.write(
             "[Open on Spotify]({})".format(sptfy_playlist_link))
 
     with row1_3:
