@@ -387,8 +387,9 @@ client_secret = '14505366a61b431994f7afe58ecdc550'
 user_id = "1113039340"
 
 spotify = SpotifyAPI(client_id, client_secret)
+print(spotify.access_token)
 access_token = spotify.access_token
-st.write(access_token)
+st.write(print(spotify.access_token))
 
 # ROW 1 ------------------------------------------------------------------------
 
