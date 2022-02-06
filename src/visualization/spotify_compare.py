@@ -388,11 +388,10 @@ user_id = "1113039340"
 
 spotify = SpotifyAPI(client_id, client_secret)
 access_token = spotify.access_token
-st.write(access_token)
+sp = spotipy.Spotify(auth = access_token)
 
 
-
-
+st.write("success")
 
 # ROW 1 ------------------------------------------------------------------------
 
@@ -406,8 +405,6 @@ with row1_2:
     st.write('#')
     row1_2.write(
         'A Web App by [Jaume Clave](https://github.com/JaumeClave)')
-
-sp, user_id = pipeline_spotipy_authentication()
 
 # ROW 2 ------------------------------------------------------------------------
 
